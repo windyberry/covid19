@@ -1,0 +1,252 @@
+<html>
+<head>
+  <title>Coronavirus COVID-19 (2019-nCoV) Data</title>
+<script src="jquery-csv.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
+<script src="jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['line']});
+  var chart = null;
+  // https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv
+  function drawChart(x) {
+        // console.log(x);
+        var data = google.visualization.arrayToDataTable(x);
+        // var data = google.visualization.arrayToDataTable([
+        // ["Day", "Thailand", "Singapore", "Germany", "Italy", "Malaysia", "Switzerland", "Norway", "Iceland"],
+        // [1, 114, 102, 130, 155, 117, 114, 108, 103],
+        // [2, 147, 106, 159, 229, 129, 214, 147, 134],
+        // [3, 177, 108, 196, 322, 149, 268, 176, 156],
+        // [4, 212, 110, 262, 453, 149, 337, 205, 171],
+        // [5, 272, 110, 482, 655, 197, 374, 400, 180],
+        // [6, 322, 117, 670, 888, 238, 491, 598, 220],
+        // [7, undefined, 130, 799, 1128, 428, 652, 702, 250],
+        // [8, undefined, 138, 1040, 1694, 566, 652, 996, undefined],
+        // [9, undefined, 150, 1176, 2036, 673, 1139, 1090, undefined],
+        // [10, undefined, 150, 1457, 2502, 790, 1359, 1221, undefined],
+        // [11, undefined, 160, 1908, 3089, undefined, 2200, 1333, undefined],
+        // [12, undefined, 178, 2078, 3858, undefined, 2200, 1463, undefined],
+        // [13, undefined, 178, 3675, 4636, undefined, 2700, 1550, undefined],
+        // [14, undefined, 200, 4585, 5883, undefined, 3028, undefined, undefined],
+        // [15, undefined, 212, 5795, 7375, undefined, undefined, undefined, undefined],
+        // [16, undefined, 226, 7272, 9172, undefined, undefined, undefined, undefined],
+        // [17, undefined, 243, 9257, 10149, undefined, undefined, undefined, undefined],
+        // [18, undefined, 266, 12327, 12462, undefined, undefined, undefined, undefined],
+        // ]);
+    // 155,229,322,453,655,888,1128,1694,2036,2502,3089,3858,4636,5883,7375,9172,10149,12462,12462,17660,21157,24747,27980,31506,35713
+
+    var options = {
+      //title: 'COVID19 grwoth rate after first 100 cases',
+      curveType: 'function',
+      legend: { position: 'right' },
+      axes: {
+        x: { 0: {side: 'day'} },
+        // Adds labels to each axis; they don't have to match the axis names.
+        y: { 0: {label: 'Infected'} }
+      }
+    };
+    if(chart != undefined) {
+      // console.log("Clear chart!");
+      chart.clearChart();
+    }
+    // var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+    chart = new google.charts.Line(document.getElementById('curve_chart'));
+    chart.draw(data, options);
+  }
+</script>
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+select {
+  padding: 15px 32px;
+  font-size: 16px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+td, input { padding: 8px; font-size: 16px; }
+tr:nth-child(odd) {background-color: #c8c8ff;}
+</style>
+</head>
+<body>
+  <center>
+  <H1>Coronavirus COVID-19 Growth after first 100 infects</H1>
+  <div id="days">
+    Select scope <select id="max">
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="?" selected>MAX</option>
+    </select> days.
+    <button id="loaddata" class="button" name="loaddata" onClick="loadFile();">Load data</button><br>
+  </div>
+
+  <div id="curve_chart" style="width:90%; height: 400px"></div>
+
+  <script>
+  //   let wanted = ["Netherlands", "Singapore", "Germany", "Italy", "Malaysia", "Switzerland", "Norway", "Iceland"
+  // ,"Finland","India","Sweden","Spain","Iraq","Indonesia", "Thailand"];
+  let wanted = ["Italy", "Singapore", "Germany", "Netherlands","Spain","Sweden", "Malaysia", "Norway", "Switzerland", "Thailand"];
+    function checking(element, index, stats) {
+      if (index > 0) {
+        tokens = element.split(',');
+        let country = tokens[1];
+        if (wanted.includes(country)) {
+          // console.log(index+" : "+element);
+          text = ""
+          var i;
+          var row = [];
+          var up100 = false;
+          for (i = 4; i < tokens.length; i++) {
+            if (tokens[i] >= 100) {
+              up100 = true;
+            }
+            if (up100) {
+              text += tokens[i] + ",";
+              row.push(tokens[i]);
+            }
+          }
+          // console.log(tokens[1]+" -> "+text);
+          stats[tokens[1]] = row;
+        }
+      }
+    }
+
+    function prepareData(stats) {
+      // console.log(stats);
+      let max = 0;
+      var headerArray = ['Day'];
+      for(let country in wanted) {
+        size = 0;
+        if (stats[wanted[country]] !== undefined) {
+          size = stats[wanted[country]].length;
+        }
+        // console.log(wanted[country], '=>', stats[wanted[country]], " ( ",size," )")
+        headerArray.push(wanted[country]);
+        if (size > max) { max = size;}
+      }
+      let usermax = parseInt($('#max').val());
+      if (usermax != undefined) {
+        if (usermax < max) { max = usermax; }
+      }
+
+      var dataArray = [headerArray];
+      for (var n = 0; n < max; n++) {
+        var rowArray = [n+1];
+        for (let country in wanted) {
+          if (stats[wanted[country]][n] !== undefined) {
+            rowArray.push(parseInt(stats[wanted[country]][n]));
+          }
+          else {
+            rowArray.push(undefined);
+          }
+        }
+        dataArray.push(rowArray);
+      }
+      return dataArray;
+    }
+
+    function toTable(stats) {
+      let table = "<table border='0' cellpadding='1' cellmargin='1' width='90%'>";
+      if (stats["Thailand"]!= null) {
+        let header = "<tr><td>Day (from First 100)</td>";
+        let data   = "<tr><td>Thailand (Infected)</td>";
+        let dif    = "<tr><td> + </td>";
+        let last = 0;
+        stats["Thailand"].forEach(
+          (element, index) => {
+            // console.log(index+" : "+ element);
+            header += "<td>"+(1+index)+"</td>";
+            data   += "<td>"+element+"</td>";
+            let diff = "-";
+            if (index > 0) { diff = element - last; }
+            dif    += "<td>"+diff+"</td>";
+            last = element;
+          }
+          //checking(element, index, stats)
+        )
+        header += "</tr>";
+        dif    += "</tr>";
+        table += header+"</tr>\n"+data+"\n"+dif+"</tr>\n";
+      }
+      table += "</table>";
+      return table;
+    }
+
+    function process(data) {
+      var stats = {};
+      data = data.replace(/ ,/g, ' ');
+      const lines = data.split('\n');
+      lines.forEach(
+        (element, index) =>
+          checking(element, index, stats)
+      )
+      let dataarr = prepareData(stats);
+      drawChart(dataarr);
+      $('#result').empty();
+      $('#result').html("<h1>"+toTable(stats)+"</h1>");
+    }
+
+    $('#load-file').bind('click', function () {
+      loadFile();
+    });
+
+    function loadFile() {
+      var file  = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv';
+      // var file  = 'time_series_19-covid-Confirmed.csv';
+      var client = new XMLHttpRequest();
+      client.open('GET', file);
+      client.onreadystatechange = function() {
+        if (client.readyState === 4){
+          process(client.responseText);
+        }
+      }
+      client.send();
+    }
+    google.charts.setOnLoadCallback(loadFile);
+  </script>
+  <div id="result"></div>
+  Source data: <a href="https://github.com/CSSEGISandData/COVID-19">Coronavirus COVID-19 Data Repository by Johns Hopkins CSSE</a> |
+  <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv" target="_blank">(Raw data)</a>
+  <br><br>
+<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">© by @windygallery 2020</style>
+<br><br>
+  </center>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-analytics.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBY9n-oLTDlQOaTK9zTZ09vrxTmsTbOCPU",
+      authDomain: "windygallery-com.firebaseapp.com",
+      databaseURL: "https://windygallery-com.firebaseio.com",
+      projectId: "windygallery-com",
+      storageBucket: "windygallery-com.appspot.com",
+      messagingSenderId: "389513197923",
+      appId: "1:389513197923:web:9b28f99f5358b759237b56",
+      measurementId: "G-BV8GE4KN4Z"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+  </script>
+</body>
+</html>
