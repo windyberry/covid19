@@ -21,6 +21,15 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+label {
+  padding: 3px;
+  font-size: 18px;
+}
+.countrylist
+{
+  border: solid white;
+  transform:scale(1.8, 1.8);
+}
 td, input { padding: 8px; font-size: 16px; }
 tr:nth-child(odd) {background-color: #c8c8ff;}
 </style>
@@ -39,24 +48,33 @@ function loadCountry() {
   <center>
   <H1>Coronavirus COVID-19 Growth after first 100 infects</H1>
   <div id="days">
-    <input type="checkbox" id="countrylist" name="countrylist" value="Germany" checked>
-    <label for="Germany"> Germany</label>
-    <input type="checkbox" id="countrylist" name="countrylist" value="Singapore" checked>
-    <label for="Singapore"> Singapore</label>
-    <input type="checkbox" id="countrylist" name="countrylist" value="Netherlands" checked>
-    <label for="Netherlands"> Netherlands</label>
-    <input type="checkbox" id="countrylist" name="countrylist" value="Spain" checked>
-    <label for="Spain"> Spain</label>
-    <input type="checkbox" id="countrylist" name="countrylist" value="Italy" checked>
-    <label for="Italy"> Italy</label>
-    <input type="checkbox" id="countrylist" name="countrylist" value="Switzerland" checked>
-    <label for="Switzerland"> Switzerland</label>
-    <input type="checkbox" id="countrylist" name="countrylist" value="Norway" checked>
-    <label for="Norway"> Norway</label>
-    <input type="checkbox" id="countrylist" name="countrylist" value="Malaysia" checked>
-    <label for="Malaysia"> Malaysia</label>
-    <input type="checkbox" id="countrylist" name="countrylist" value="Thailand" checked>
-    <label for="Thailand"> Thailand</label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Germany" checked> Germany</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Singapore" checked> Singapore</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Netherlands" checked> Netherlands</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Spain" checked> Spain</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Italy" checked> Italy</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Switzerland" checked> Switzerland</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Norway" checked> Norway</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Malaysia" checked> Malaysia</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Thailand" checked> Thailand</label>
+    </label>
 <br><br>
 
     Select scope <select id="max">
