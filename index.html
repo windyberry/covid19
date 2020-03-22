@@ -41,7 +41,6 @@
       legend: { position: 'right' },
       axes: {
         x: { 0: {side: 'day'} },
-        // Adds labels to each axis; they don't have to match the axis names.
         y: { 0: {label: 'Infected'} }
       }
     };
@@ -81,6 +80,25 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
   <center>
   <H1>Coronavirus COVID-19 Growth after first 100 infects</H1>
   <div id="days">
+    <input type="checkbox" id="countrylist" name="countrylist" value="Germany" checked>
+    <label for="Germany"> Germany</label>
+    <input type="checkbox" id="countrylist" name="countrylist" value="Singapore" checked>
+    <label for="Singapore"> Singapore</label>
+    <input type="checkbox" id="countrylist" name="countrylist" value="Netherlands" checked>
+    <label for="Netherlands"> Netherlands</label>
+    <input type="checkbox" id="countrylist" name="countrylist" value="Spain" checked>
+    <label for="Spain"> Spain</label>
+    <input type="checkbox" id="countrylist" name="countrylist" value="Italy" checked>
+    <label for="Italy"> Italy</label>
+    <input type="checkbox" id="countrylist" name="countrylist" value="Switzerland" checked>
+    <label for="Switzerland"> Switzerland</label>
+    <input type="checkbox" id="countrylist" name="countrylist" value="Norway" checked>
+    <label for="Norway"> Norway</label>
+    <input type="checkbox" id="countrylist" name="countrylist" value="Malaysia" checked>
+    <label for="Malaysia"> Malaysia</label>
+    <input type="checkbox" id="countrylist" name="countrylist" value="Thailand" checked>
+    <label for="Thailand"> Thailand</label><br>
+
     Select scope <select id="max">
       <option value="4">4</option>
       <option value="5">5</option>
@@ -92,136 +110,156 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
     </select> days.
     <button id="loaddata" class="button" name="loaddata" onClick="loadFile();">Load data</button><br>
   </div>
+<div id="curve_chart" style="width:90%; height: 360px"></div>
 
-  <div id="curve_chart" style="width:90%; height: 400px"></div>
+<script>
+//   let wanted = ["Netherlands", "Singapore", "Germany", "Italy", "Malaysia", "Switzerland", "Norway", "Iceland"
+// ,"Finland","India","Sweden","Spain","Iraq","Indonesia", "Thailand"];
+let wanted = ["Italy", "Singapore", "Germany", "Netherlands","Spain","Sweden", "Malaysia", "Norway", "Switzerland", "Thailand"];
 
-  <script>
-  //   let wanted = ["Netherlands", "Singapore", "Germany", "Italy", "Malaysia", "Switzerland", "Norway", "Iceland"
-  // ,"Finland","India","Sweden","Spain","Iraq","Indonesia", "Thailand"];
-  let wanted = ["Italy", "Singapore", "Germany", "Netherlands","Spain","Sweden", "Malaysia", "Norway", "Switzerland", "Thailand"];
-    function checking(element, index, stats) {
-      if (index > 0) {
-        tokens = element.split(',');
-        let country = tokens[1];
-        if (wanted.includes(country)) {
-          // console.log(index+" : "+element);
-          text = ""
-          var i;
-          var row = [];
-          var up100 = false;
-          for (i = 4; i < tokens.length; i++) {
-            if (tokens[i] >= 100) {
-              up100 = true;
-            }
-            if (up100) {
-              text += tokens[i] + ",";
-              row.push(tokens[i]);
-            }
-          }
-          // console.log(tokens[1]+" -> "+text);
-          stats[tokens[1]] = row;
+function userSelectCountry() {
+  let list = [];
+  $.each($("input[name='countrylist']:checked"), function(){
+      list.push($(this).val());
+  });
+  return list;
+}
+
+function checking(element, index, stats) {
+  if (index > 0) {
+    tokens = element.split(',');
+    let country = tokens[1];
+    if (wanted.includes(country)) {
+      // console.log(index+" : "+element);
+      text = ""
+      var i;
+      var row = [];
+      var up100 = false;
+      for (i = 4; i < tokens.length; i++) {
+        if (tokens[i] >= 100) {
+          up100 = true;
+        }
+        if (up100) {
+          text += tokens[i] + ",";
+          row.push(tokens[i]);
         }
       }
+      // console.log(tokens[1]+" -> "+text);
+      stats[tokens[1]] = row;
     }
+  }
+}
 
-    function prepareData(stats) {
-      // console.log(stats);
-      let max = 0;
-      var headerArray = ['Day'];
-      for(let country in wanted) {
-        size = 0;
-        if (stats[wanted[country]] !== undefined) {
-          size = stats[wanted[country]].length;
-        }
-        // console.log(wanted[country], '=>', stats[wanted[country]], " ( ",size," )")
-        headerArray.push(wanted[country]);
-        if (size > max) { max = size;}
-      }
-      let usermax = parseInt($('#max').val());
-      if (usermax != undefined) {
-        if (usermax < max) { max = usermax; }
-      }
-
-      var dataArray = [headerArray];
-      for (var n = 0; n < max; n++) {
-        var rowArray = [n+1];
-        for (let country in wanted) {
-          if (stats[wanted[country]][n] !== undefined) {
-            rowArray.push(parseInt(stats[wanted[country]][n]));
-          }
-          else {
-            rowArray.push(undefined);
-          }
-        }
-        dataArray.push(rowArray);
-      }
-      return dataArray;
+function prepareData(stats) {
+  // console.log(stats);
+  let max = 0;
+  var headerArray = ['Day'];
+  for(let country in wanted) {
+    size = 0;
+    if (stats[wanted[country]] !== undefined) {
+      size = stats[wanted[country]].length;
     }
+    // console.log(wanted[country], '=>', stats[wanted[country]], " ( ",size," )")
+    headerArray.push(wanted[country]);
+    if (size > max) { max = size;}
+  }
+  let usermax = parseInt($('#max').val());
+  if (usermax != undefined) {
+    if (usermax < max) { max = usermax; }
+  }
 
-    function toTable(stats) {
-      let table = "<table border='0' cellpadding='1' cellmargin='1' width='90%'>";
-      if (stats["Thailand"]!= null) {
-        let header = "<tr><td>Day (from First 100)</td>";
-        let data   = "<tr><td>Thailand (Infected)</td>";
-        let dif    = "<tr><td> + </td>";
-        let last = 0;
-        stats["Thailand"].forEach(
-          (element, index) => {
-            // console.log(index+" : "+ element);
-            header += "<td>"+(1+index)+"</td>";
-            data   += "<td>"+element+"</td>";
-            let diff = "-";
-            if (index > 0) { diff = element - last; }
-            dif    += "<td>"+diff+"</td>";
-            last = element;
-          }
-          //checking(element, index, stats)
-        )
-        header += "</tr>";
-        dif    += "</tr>";
-        table += header+"</tr>\n"+data+"\n"+dif+"</tr>\n";
+  var dataArray = [headerArray];
+  for (var n = 0; n < max; n++) {
+    var rowArray = [n+1];
+    for (let country in wanted) {
+      if (stats[wanted[country]][n] !== undefined) {
+        rowArray.push(parseInt(stats[wanted[country]][n]));
       }
-      table += "</table>";
-      return table;
-    }
-
-    function process(data) {
-      var stats = {};
-      data = data.replace(/ ,/g, ' ');
-      const lines = data.split('\n');
-      lines.forEach(
-        (element, index) =>
-          checking(element, index, stats)
-      )
-      let dataarr = prepareData(stats);
-      drawChart(dataarr);
-      $('#result').empty();
-      $('#result').html("<h1>"+toTable(stats)+"</h1>");
-    }
-
-    $('#load-file').bind('click', function () {
-      loadFile();
-    });
-
-    function loadFile() {
-      var file  = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv';
-      // var file  = 'time_series_19-covid-Confirmed.csv';
-      var client = new XMLHttpRequest();
-      client.open('GET', file);
-      client.onreadystatechange = function() {
-        if (client.readyState === 4){
-          process(client.responseText);
-        }
+      else {
+        rowArray.push(undefined);
       }
-      client.send();
     }
-    google.charts.setOnLoadCallback(loadFile);
-  </script>
+    dataArray.push(rowArray);
+  }
+  return dataArray;
+}
+
+function toTable(stats) {
+  let table = "<table border='0' cellpadding='1' cellmargin='1' width='90%'>";
+  if (stats["Thailand"]!= null) {
+    let header = "<tr><td>Day (from First 100)</td>";
+    let data   = "<tr><td>Thailand (Infected)</td>";
+    let dif    = "<tr><td> + </td>";
+    let last = 0;
+    stats["Thailand"].forEach(
+      (element, index) => {
+        // console.log(index+" : "+ element);
+        header += "<td>"+(1+index)+"</td>";
+        data   += "<td>"+element+"</td>";
+        let diff = "-";
+        if (index > 0) { diff = element - last; }
+        dif    += "<td>"+diff+"</td>";
+        last = element;
+      }
+      //checking(element, index, stats)
+    )
+    header += "</tr>";
+    dif    += "</tr>";
+    table += header+"</tr>\n"+data+"\n"+dif+"</tr>\n";
+  }
+  table += "</table>";
+  return table;
+}
+
+function process(data) {
+  var stats = {};
+  data = data.replace(/ ,/g, ' ');
+  const lines = data.split('\n');
+  lines.forEach(
+    (element, index) =>
+      checking(element, index, stats)
+  )
+  let dataarr = prepareData(stats);
+  drawChart(dataarr);
+  $('#result').empty();
+  $('#result').html("<h1>"+toTable(stats)+"</h1>");
+}
+
+$('#load-file').bind('click', function () {
+  loadFile();
+});
+
+function requestData() {
+  let file  = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv';
+  // var file  = 'time_series_19-covid-Confirmed.csv';
+  var client = new XMLHttpRequest();
+  client.open('GET', file);
+  client.onreadystatechange = function() {
+    if (client.readyState === 4){
+      process(client.responseText);
+    }
+  }
+  client.send();
+}
+
+function loadFile() {
+  let list = userSelectCountry();
+  if (list.length > 0) {
+    wanted = list;
+    requestData();
+  }
+  else {
+    alert("Please select at least one country!");
+  }
+}
+google.charts.setOnLoadCallback(loadFile);
+</script>
   <div id="result"></div>
   Source data: <a href="https://github.com/CSSEGISandData/COVID-19">Coronavirus COVID-19 Data Repository by Johns Hopkins CSSE</a> |
   <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv" target="_blank">(Raw data)</a>
   <br><br>
-<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">© by @windygallery 2020</style>
+<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.1.2.7 by
+<a href="https://github.com/windyberry/covid19">@windygallery</a> 2020</style>
 <br><br>
   </center>
 
