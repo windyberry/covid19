@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Coronavirus COVID-19 (2019-nCoV) Data</title>
+  <title>Windygallery's COVID-19</title>
 <script src="jquery-csv.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
 <script src="jquery-3.3.1.min.js"></script>
@@ -93,10 +93,10 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
       <input type="checkbox" class="countrylist" name="countrylist" value="Germany" checked> Germany</label>
     </label>
     <label>
-      <input type="checkbox" class="countrylist" name="countrylist" value="Singapore" checked> Singapore</label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Singapore" > Singapore</label>
     </label>
     <label>
-      <input type="checkbox" class="countrylist" name="countrylist" value="Netherlands" checked> Netherlands</label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Netherlands" > Netherlands</label>
     </label>
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Spain" checked> Spain</label>
@@ -108,15 +108,32 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
       <input type="checkbox" class="countrylist" name="countrylist" value="Switzerland" checked> Switzerland</label>
     </label>
     <label>
-      <input type="checkbox" class="countrylist" name="countrylist" value="Norway" checked> Norway</label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Norway" > Norway</label>
     </label>
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Malaysia" checked> Malaysia</label>
     </label>
     <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Pakistan" checked> Pakistan</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Israel" > Israel</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Brazil" > Brazil</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="South Korea" checked> South Korea</label>
+    </label>
+    <label>
+      <!-- <input type="checkbox" class="countrylist" name="countrylist" value="US" checked> US</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="United Kingdom" checked> United Kingdom</label> -->
+    </label>
+    <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Thailand" checked> Thailand</label>
     </label><br><br>
-
     Select scope <select id="max">
       <option value="4">4</option><option value="5">5</option><option value="6">6</option>
       <option value="7">7</option><option value="8">8</option><option value="9">9</option>
@@ -147,24 +164,25 @@ function checking(element, index, stats) {
   if (index > 0) {
     tokens = element.split(',');
     let country = tokens[1];
-    if (wanted.includes(country)) {
+    // if (wanted.includes(country)) {
       // console.log(index+" : "+element);
-      text = ""
       var i;
       var row = [];
       var up100 = false;
       for (i = 4; i < tokens.length; i++) {
-        if (tokens[i] >= 100) {
-          up100 = true;
-        }
-        if (up100) {
-          text += tokens[i] + ",";
-          row.push(tokens[i]);
-        }
+        row.push(parseInt(tokens[i]));
       }
-      // console.log(tokens[1]+" -> "+text);
-      stats[tokens[1]] = row;
-    }
+      if (stats[tokens[1]] == undefined) {
+        stats[tokens[1]] = row;
+      } else {
+        let old    = stats[tokens[1]]
+        let newArr = []
+        for (i = 0; i < old.length; i++) {
+          newArr.push(old[i] + row[i]);
+        }
+        stats[tokens[1]] = newArr;
+      }
+    // }
   }
 }
 
@@ -229,14 +247,37 @@ function toTable(stats) {
   return table;
 }
 
+function trimValue(element, newArr) {
+  if (element>=100) { newArr.push(element); }
+  return newArr;
+}
+
+function shortenStats(stats) {
+  for(let key in stats) {
+    let newArr = []
+    let arr    = stats[key];
+    arr.forEach(
+      (element, index) =>
+      newArr = trimValue(element, newArr)
+    )
+    stats[key] = newArr;
+  }
+}
+
 function process(data) {
   var stats = {};
-  data = data.replace(/ ,/g, ' ');
+  data = data.replace(/"Korea, South"/g, 'South Korea');
+  data = data.replace(/"([^,]+),[^"]+"/g, "$1");
+  // "Berkshire County, MA"
   const lines = data.split('\n');
   lines.forEach(
     (element, index) =>
       checking(element, index, stats)
   )
+
+  shortenStats(stats);
+
+  // console.log(stats);
   let dataarr = prepareData(stats);
   drawChart(dataarr);
   $('#result').empty();
@@ -276,7 +317,7 @@ google.charts.setOnLoadCallback(loadFile);
   Source data: <a href="https://github.com/CSSEGISandData/COVID-19">Coronavirus COVID-19 Data Repository by Johns Hopkins CSSE</a> |
   <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv" target="_blank">(Raw data)</a>
   <br><br>
-<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.1.2.9 by
+<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.1.5.0 by
 <a href="https://github.com/windyberry/covid19">@windygallery</a> 2020</style>
 <br><br>
   </center>
