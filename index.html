@@ -10,31 +10,7 @@
   var chart = null;
   // https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv
   function drawChart(x) {
-        // console.log(x);
-        var data = google.visualization.arrayToDataTable(x);
-        // var data = google.visualization.arrayToDataTable([
-        // ["Day", "Thailand", "Singapore", "Germany", "Italy", "Malaysia", "Switzerland", "Norway", "Iceland"],
-        // [1, 114, 102, 130, 155, 117, 114, 108, 103],
-        // [2, 147, 106, 159, 229, 129, 214, 147, 134],
-        // [3, 177, 108, 196, 322, 149, 268, 176, 156],
-        // [4, 212, 110, 262, 453, 149, 337, 205, 171],
-        // [5, 272, 110, 482, 655, 197, 374, 400, 180],
-        // [6, 322, 117, 670, 888, 238, 491, 598, 220],
-        // [7, undefined, 130, 799, 1128, 428, 652, 702, 250],
-        // [8, undefined, 138, 1040, 1694, 566, 652, 996, undefined],
-        // [9, undefined, 150, 1176, 2036, 673, 1139, 1090, undefined],
-        // [10, undefined, 150, 1457, 2502, 790, 1359, 1221, undefined],
-        // [11, undefined, 160, 1908, 3089, undefined, 2200, 1333, undefined],
-        // [12, undefined, 178, 2078, 3858, undefined, 2200, 1463, undefined],
-        // [13, undefined, 178, 3675, 4636, undefined, 2700, 1550, undefined],
-        // [14, undefined, 200, 4585, 5883, undefined, 3028, undefined, undefined],
-        // [15, undefined, 212, 5795, 7375, undefined, undefined, undefined, undefined],
-        // [16, undefined, 226, 7272, 9172, undefined, undefined, undefined, undefined],
-        // [17, undefined, 243, 9257, 10149, undefined, undefined, undefined, undefined],
-        // [18, undefined, 266, 12327, 12462, undefined, undefined, undefined, undefined],
-        // ]);
-    // 155,229,322,453,655,888,1128,1694,2036,2502,3089,3858,4636,5883,7375,9172,10149,12462,12462,17660,21157,24747,27980,31506,35713
-
+    var data = google.visualization.arrayToDataTable(x);
     var options = {
       //title: 'COVID19 grwoth rate after first 100 cases',
       curveType: 'function',
@@ -121,6 +97,9 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
     </label>
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Brazil" > Brazil</label>
+    </label>
+    <label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="US"> US</label>
     </label>
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="South Korea" checked> South Korea</label>
@@ -321,7 +300,7 @@ google.charts.setOnLoadCallback(loadFile);
   Source data: <a href="https://github.com/CSSEGISandData/COVID-19">Coronavirus COVID-19 Data Repository by Johns Hopkins CSSE</a> |
   <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv" target="_blank">(Raw data)</a>
   <br><br>
-<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.1.5.0 by
+<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.2.0.0 by
 <a href="https://github.com/windyberry/covid19">@windygallery</a> 2020</style>
 <br><br>
   </center>
