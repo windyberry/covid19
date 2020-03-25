@@ -90,7 +90,7 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
       <input type="checkbox" class="countrylist" name="countrylist" value="Malaysia" checked> Malaysia</label>
     </label>
     <label>
-      <input type="checkbox" class="countrylist" name="countrylist" value="Pakistan" checked> Pakistan</label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="Pakistan"> Pakistan</label>
     </label>
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Israel" > Israel</label>
@@ -99,7 +99,7 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
       <input type="checkbox" class="countrylist" name="countrylist" value="Brazil" > Brazil</label>
     </label>
     <label>
-      <input type="checkbox" class="countrylist" name="countrylist" value="US"> US</label>
+      <input type="checkbox" class="countrylist" name="countrylist" value="US" checked> US</label>
     </label>
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="South Korea" checked> South Korea</label>
@@ -227,7 +227,7 @@ function toTable(stats) {
 }
 
 function trimValue(element, newArr) {
-  if (element>=100) { newArr.push(element); }
+  if (element>=1) { newArr.push(element); }
   return newArr;
 }
 
@@ -255,7 +255,6 @@ function process(data) {
   )
 
   shortenStats(stats);
-
   // console.log(stats);
   let dataarr = prepareData(stats);
   drawChart(dataarr);
@@ -270,9 +269,10 @@ $('#load-file').bind('click', function () {
 // https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv
 // https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv
 // https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv
-
+// https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv
 function requestData() {
-  let file  = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv';
+  // let file  = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv';
+  let file  = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv';
   // var file  = 'time_series_19-covid-Confirmed.csv';
   var client = new XMLHttpRequest();
   client.open('GET', file);
@@ -300,7 +300,7 @@ google.charts.setOnLoadCallback(loadFile);
   Source data: <a href="https://github.com/CSSEGISandData/COVID-19">Coronavirus COVID-19 Data Repository by Johns Hopkins CSSE</a> |
   <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv" target="_blank">(Raw data)</a>
   <br><br>
-<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.2.0.0 by
+<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.2.1.0 by
 <a href="https://github.com/windyberry/covid19">@windygallery</a> 2020</style>
 <br><br>
   </center>
