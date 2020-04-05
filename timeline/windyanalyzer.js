@@ -2,7 +2,7 @@
 // code for analyzing COVID19 cases to understand some reasons
 // developer: @windygallery
 // date 1 April 2020 00:39AM
-// version 1.0.0
+// version 1.1.0
 
 // grouping
 let groupNames = ['รอการตรวจสอบ', //0
@@ -11,7 +11,7 @@ let groupNames = ['รอการตรวจสอบ', //0
 'หมอและพยาบาล',   //3
 'ติดภายในประเทศ',   //4
 'สนามมวย',    //5
-'สนามบันเทิง',  //6
+'สถานบันเทิง',  //6
 'คนดัง/แบรนด์'  //7
 ];
 
@@ -112,6 +112,10 @@ function validateunittest(key, expectedgroup) {
   return result;
 }
 
+let groupicons = {0:"./images/hourglass.png", 1:"./images/airflight.png", 2:"./images/waiter.png",
+3:"./images/doctor.png", 4:"./images/cough.png", 5:"./images/boxing.png",
+6:"./images/beer.png", 7:"./images/superstar.png" };
+
 function printCase(element) {
   let detailTh = unescape(element.detail_th);
   let group    = testGroup(detailTh);
@@ -129,7 +133,9 @@ function printCase(element) {
   else if (unittest == 2){
     highlight = " class='new' ";
   }
-  let text     = "<div "+highlight+">"+element.confirm_at+" "+element.rid+":<b>"+group+"</b>, ("+count+") : "+detailTh+"</div>\n";
+  let text = "<div "+highlight+">"+element.confirm_at+" <img src='"+groupicons[group]+"'> <b>x"+count+"</b> ";
+  text += "case: "+element.rid+": "+detailTh+"</div>\n";
+  // console.log(text);
   let keyGroup = ""+group
   if (grouping.hasOwnProperty(keyGroup)) {
     grouping[keyGroup] += "<div "+highlight+"> - "+detailTh+"</div>\n";

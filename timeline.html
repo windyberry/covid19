@@ -3,9 +3,10 @@
 <head>
 <html lang="en">
 <meta charset=utf-8>
-<link rel="shortcut icon" href="/favicon.ico">
+<link rel="shortcut icon" href="favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0" />
 <title>COVID19 Timeline in Thailand by @windygallery</title>
+<link href="timeline/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
 <style>
 body, html {
   font-family: arial, sans-serif;
@@ -20,7 +21,6 @@ body, html {
 <!-- note: moment.js must be loaded before vis.js, else vis.js uses its embedded version of moment.js -->
 <script src="timeline/moment.min.js"></script>
 <script src="timeline/vis.js"></script>
-<link href="timeline/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -28,12 +28,12 @@ body, html {
 <h1>COVID-19 Timeline in Thailand</h1>
 Source: <a href="https://covid19.th-stat.com/th/network">กรมควบคุมโรค</a>,
 <style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding by
-<a href="https://visjs.org/">@windygallery (2020)</a> v.1.0.0</style>
+<a href="https://visjs.org/">@windygallery (2020)</a> v.1.1.0</style>
 <br><br>
 <div id="visualization"></div>
 
 
-<script src="data-2020-04-01.js" crossorigin="anonymous"></script>
+<script src="data-2020-04-05.js" crossorigin="anonymous"></script>
 <script src="timeline/windyanalyzer.js" crossorigin="anonymous"></script>
 
 <script>
@@ -63,9 +63,14 @@ function setData(dataset, names) {
     width: '95%',
     height: '400px',
     margin: { item: 10 },
-    timeAxis: {scale: 'day', step: 1},
+    // timeAxis: {scale: 'day', step: 1},
     zoomMin: 864000000,
-    zoomMax: 8640000000
+    zoomMax: 8640000000,
+
+    // min: new Date(2020, 2, 1),                // lower limit of visible range
+    // max: new Date(2020, 3, 10),                // upper limit of visible range
+    // zoomMin: 10000 * 60 * 60 * 24,             // one day in milliseconds
+    // zoomMax: 10000 * 60 * 60 * 24 * 31 * 3     // about three months in milliseconds
   };
 
   var timeline = new vis.Timeline(container);
@@ -80,9 +85,11 @@ function setData(dataset, names) {
   //   }
   // });
   timeline.on('click', function(properties) {
-    var target = properties.event.target;
-    var item = items.get(properties.item);
+    var target  = properties.event.target;
+    var item    = items.get(properties.item);
     console.log(properties.event);
+    console.log(target);
+    console.log(item);
     // if (properties.item && target.tagName === "DIV") focusMethod(target);
     if (properties.item && target.tagName === "INPUT") target.focus();
     if (properties.item && target.tagName === "BUTTON") getInputValue(item, target);
