@@ -51,18 +51,18 @@ select {
 }
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
 }
-label {
+/* label {
   padding: 5px 5px;
   font-size: 18px;
-}
+} */
 .countrylist
 {
   border: solid white;
   transform:scale(1.8, 1.8);
 }
-td { padding: 8px; font-size: 16px; }
+td { padding: 1px; font-size: 11px; font-weight: normal;}
 tr:nth-child(odd) {background-color: #c8c8ff;}
 </style>
 </head>
@@ -70,15 +70,12 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
   <center>
   <H1>Coronavirus COVID-19 Growth after first 100 infects</H1>
   <div id="days">
-    <label>
+    <!-- <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Germany" checked> Germany</label>
     </label>
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Singapore" > Singapore</label>
     </label>
-    <!-- <label>
-      <input type="checkbox" class="countrylist" name="countrylist" value="Netherlands" > Netherlands</label>
-    </label> -->
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Spain" checked> Spain</label>
     </label>
@@ -97,12 +94,9 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Pakistan"> Pakistan</label>
     </label>
-    <!-- <label>
-      <input type="checkbox" class="countrylist" name="countrylist" value="Israel" > Israel</label>
-    </label> -->
-    <!-- <label>
+    <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Brazil" > Brazil</label>
-    </label> -->
+    </label>
     <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="US" checked> US</label>
     </label>
@@ -110,14 +104,50 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
       <input type="checkbox" class="countrylist" name="countrylist" value="South Korea" checked> South Korea</label>
     </label>
     <label>
-      <!-- <input type="checkbox" class="countrylist" name="countrylist" value="US" checked> US</label>
-    </label>
-    <label>
-      <input type="checkbox" class="countrylist" name="countrylist" value="United Kingdom" checked> United Kingdom</label> -->
-    </label>
-    <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Thailand" checked> Thailand</label>
-    </label><br><br>
+    </label><br> -->
+  <style>
+  .pip {
+    /* margin: 4px;
+    font-size: 20px;
+    //font-weight: bolder;
+    cursor: pointer;
+    color: #555555; */
+    /* max-width: 100px; */
+    display:inline-block;
+    color:#444;
+    border:1px solid #CCC;
+    background:#DDD;
+    box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+    cursor:pointer;
+    vertical-align:middle;
+    padding: 5px;
+    margin: 4px;
+    text-align: center;
+  }
+  .highlight {
+    color: #ffffff;
+    background: #22cc33;
+  }
+  </style>
+    <div class='pip highlight' value="Thailand">Thailand</div>
+    <div class='pip highlight' value="Germany">Germany</div>
+    <div class='pip highlight' value="Singapore">Singapore</div>
+    <div class='pip highlight' value="US">US</div>
+    <div class='pip highlight' value="Switzerland">Switzerland</div>
+    <div class='pip' value="Norway">Norway</div>
+    <div class='pip' value="Malaysia">Malaysia</div>
+    <div class='pip highlight' value="India">India</div>
+    <div class='pip highlight' value="Brazil">Brazil</div>
+    <div class='pip' value="Spain">Spain</div>
+    <div class='pip highlight' value="Italy">Italy</div>
+<script>
+$( ".pip" ).click(function() {
+  $( this ).toggleClass( "highlight" );
+});
+</script>
+<br>
+<br>
     Select scope <select id="max">
       <option value="4">4</option><option value="5">5</option><option value="6">6</option>
       <option value="7">7</option><option value="8">8</option><option value="9">9</option>
@@ -141,8 +171,11 @@ let wanted = ["Italy", "Singapore", "Germany", "Netherlands","Spain","Sweden", "
 
 function userSelectCountry() {
   let list = [];
-  $.each($("input[name='countrylist']:checked"), function(){
-      list.push($(this).val());
+  // $.each($("input[name='countrylist']:checked"), function(){
+  //     list.push($(this).val());
+  // });
+  $(".pip.highlight").each(function(){
+    list.push($(this).html());
   });
   return list;
 }
@@ -307,7 +340,7 @@ google.charts.setOnLoadCallback(loadFile);
   Source data: <a href="https://github.com/CSSEGISandData/COVID-19">Coronavirus COVID-19 Data Repository by Johns Hopkins CSSE</a> |
   <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv" target="_blank">(Raw data)</a>
   <br><br>
-<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.2.2.0 by
+<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.2.3.0 by
 <a href="https://github.com/windyberry/covid19">@windygallery</a> 2020</style>
 <br><br>
   </center>
