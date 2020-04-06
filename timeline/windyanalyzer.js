@@ -2,11 +2,11 @@
 // code for analyzing COVID19 cases to understand some reasons
 // developer: @windygallery
 // date 1 April 2020 00:39AM
-// version 1.1.0
+// version 1.2.0
 
 // grouping
 let groupNames = ['รอการตรวจสอบ', //0
-'เดินทางไปต่างประเทศ',  //1
+'เดินทางต่างประเทศ',  //1
 'สัมผัสกับชาวต่างชาติ',   //2
 'หมอและพยาบาล',   //3
 'ติดภายในประเทศ',   //4
@@ -116,6 +116,8 @@ let groupicons = {0:"./images/hourglass.png", 1:"./images/airflight.png", 2:"./i
 3:"./images/doctor.png", 4:"./images/cough.png", 5:"./images/boxing.png",
 6:"./images/beer.png", 7:"./images/superstar.png" };
 
+var totalCases = {0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0};
+
 function printCase(element) {
   let detailTh = unescape(element.detail_th);
   let group    = testGroup(detailTh);
@@ -133,6 +135,9 @@ function printCase(element) {
   else if (unittest == 2){
     highlight = " class='new' ";
   }
+
+  totalCases[group] = totalCases[group] + count;
+
   let text = "<div "+highlight+">"+element.confirm_at+" <img src='"+groupicons[group]+"'> <b>x"+count+"</b> ";
   text += "case: "+element.rid+": "+detailTh+"</div>\n";
   // console.log(text);
@@ -165,6 +170,8 @@ function extractCase(element) {
   // element.confirm_at: "2020-03-27";
   let dateArr  = element.confirm_at.split("-");
   let timing   = Date.UTC(dateArr[0], dateArr[1]-1, dateArr[2]);
+
+  totalCases[group] = totalCases[group] + count;
   // console.log(element.rid+" : "+dateArr[0]+"-"+(dateArr[1]-1)+"-"+dateArr[2]+" = "+timing+" -> "+(new Date(timing)).toString());
   let item = {id: element.id, group: group,
     content: "case:"+element.rid+":"+detailTh+" (+"+count+")", start: timing, type: 'box'};
@@ -232,7 +239,13 @@ function extractAllCases() {
 }
 
 function getGroupNames() {
-  return groupNames;
+  let namewithnumber = [];
+  for (var i = 0; i < groupNames.length; i++) {
+    let nameandnumber = groupNames[i]+" ("+totalCases[i]+")";
+    namewithnumber.push(nameandnumber);
+  }
+  return namewithnumber;
+  // return groupNames;
 }
 // allcases = "";
 // data_case.reverse().forEach(
