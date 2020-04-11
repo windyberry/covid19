@@ -66,6 +66,9 @@ function countCase(str) {
       total = parseInt(res[1]) - parseInt(res[0]) + 1;
     }
   }
+  if (total < 0) { // for someone who swap max,min
+    total = -total;
+  }
   return total;
 }
 
@@ -199,16 +202,23 @@ function optimize(list) {
     groupandtime = list[i].group+" "+list[i].start;
     var r = /\(\+(\d+)\)/;
     let o = list[i].content.match(r);
-    if (o.length > 1) {
-      let valueadd = parseInt(o[1]);
-      // console.log(list[i].content.match(r)[1]);
-      if (hash.hasOwnProperty(groupandtime)) {
-        // console.log(hash[groupandtime]);
-        hash[groupandtime].value = hash[groupandtime].value + valueadd;
-      }
-      else {
-        hash[groupandtime] = {id: j, value: valueadd, group: list[i].group, start: list[i].start, type: 'box'};
-        j = j + 1;
+    if (o == null) {
+      // console.log("========== why is null");
+      // console.log(list[i]);
+      // console.log("----------");
+    }
+    else {
+      if (o.length > 1) {
+        let valueadd = parseInt(o[1]);
+        // console.log(list[i].content.match(r)[1]);
+        if (hash.hasOwnProperty(groupandtime)) {
+          // console.log(hash[groupandtime]);
+          hash[groupandtime].value = hash[groupandtime].value + valueadd;
+        }
+        else {
+          hash[groupandtime] = {id: j, value: valueadd, group: list[i].group, start: list[i].start, type: 'box'};
+          j = j + 1;
+        }
       }
     }
   }
