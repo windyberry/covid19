@@ -2,7 +2,7 @@
 // code for analyzing COVID19 cases to understand some reasons
 // developer: @windygallery
 // date 1 April 2020 00:39AM
-// version 1.2.0
+// version 1.3.0
 
 // grouping
 let groupNames = ['รอการตรวจสอบ', //0
