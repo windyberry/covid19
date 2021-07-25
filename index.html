@@ -3,9 +3,9 @@
 <head>
 <html lang="en">
 <meta charset=utf-8>
-<link rel="shortcut icon" href="/favicon.ico">
+<link rel="shortcut icon" href="http://windygallery.com/images/favicon.ico">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0" />
-  <title>Coronavirus COVID-19 by @windygallery</title>
+  <title>COVID-19 Growth by @windygallery</title>
 <script src="jquery-csv.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
 <script src="jquery-3.3.1.min.js"></script>
@@ -19,6 +19,8 @@
     var options = {
       //title: 'COVID19 grwoth rate after first 100 cases',
       curveType: 'function',
+      crosshair: { trigger: 'both' },
+      chartArea: {top: 40, width:'65%', bottom: 80},
       legend: { position: 'right' },
       axes: {
         x: { 0: {side: 'day'} },
@@ -39,19 +41,20 @@
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 12px 16px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
+  font-size: 14px;
 }
 select {
   padding: 2px 4px;
-  font-size: 20px;
+  font-size: 14px;
 }
 table {
   border-collapse: collapse;
-  width: 90%;
+  font-size: 14px;
+  /* width: 90%; */
 }
 /* label {
   padding: 5px 5px;
@@ -60,15 +63,26 @@ table {
 .countrylist
 {
   border: solid white;
-  transform:scale(1.8, 1.8);
+  transform:scale(1.5, 1.5);
 }
-td { padding: 1px; font-size: 11px; font-weight: normal;}
+td { padding: 1px; font-size: 14px; font-weight: normal;}
 tr:nth-child(odd) {background-color: #c8c8ff;}
+/* tr:nth-child(1) {background-color: #c8c8ff;} */
 </style>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-2WJ647FXQR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-2WJ647FXQR');
+</script>
 </head>
 <body>
   <center>
-  <H1>Coronavirus COVID-19 Growth after first 100 infects</H1>
+  <H1>COVID-19 Growth after first 30,000 infects</H1>
   <div id="days">
     <!-- <label>
       <input type="checkbox" class="countrylist" name="countrylist" value="Germany" checked> Germany</label>
@@ -130,48 +144,52 @@ tr:nth-child(odd) {background-color: #c8c8ff;}
     background: #22cc33;
   }
   </style>
-    <div class='pip highlight' value="Thailand">Thailand</div>
-    <div class='pip highlight' value="Germany">Germany</div>
+    <div class='pip' value="Germany">Germany</div>
     <div class='pip highlight' value="Singapore">Singapore</div>
-    <div class='pip highlight' value="US">US</div>
+    <div class='pip' value="US">US</div>
+    <div class='pip' value="India">India</div>
+    <div class='pip' value="Brazil">Brazil</div>
+    <div class='pip' value="Russia">Russia</div>
+    <div class='pip' value="Italy">Italy</div>
+    <div class='pip' value="United Kingdom">United Kingdom</div>
+    <div class='pip highlight' value="Philippines">Philippines</div>
+    <div class='pip' value="Vietnam">Vietnam</div>
+    <div class='pip' value="France">France</div>
+    <div class='pip' value="Burma">Burma</div>
     <div class='pip highlight' value="Switzerland">Switzerland</div>
-    <div class='pip' value="Norway">Norway</div>
-    <div class='pip' value="Malaysia">Malaysia</div>
-    <div class='pip highlight' value="India">India</div>
-    <div class='pip highlight' value="Brazil">Brazil</div>
-    <div class='pip' value="Spain">Spain</div>
-    <div class='pip highlight' value="Italy">Italy</div>
+    <div class='pip highlight' value="South Korea">South Korea</div>
+    <div class='pip highlight' value="Malaysia">Malaysia</div>
+    <div class='pip highlight' value="Japan">Japan</div>
+    <div class='pip highlight' value="Cambodia">Cambodia</div>
+    <!-- <div class='pip' value="Spain">Spain</div> -->
+    <!-- <div class='pip' value="Norway">Norway</div> -->
+    <div class='pip highlight' value="Thailand">Thailand</div>
+  Select scope <select id="max">
+    <option value="10">10</option>
+    <option value="30">30</option>
+    <option value="60">60</option>
+    <option value="90">90</option>
+    <option value="120">120</option>
+    <option value="150">150</option>
+    <option value="180" selected>180</option>
+    <option value="270">270</option>
+    <option value="365">365</option>
+    <option value="?">MAX</option>
+  </select> days.
 <script>
-$( ".pip" ).click(function() {
-  $( this ).toggleClass( "highlight" );
-});
+  $( ".pip" ).click(function() {
+    $( this ).toggleClass( "highlight" );
+  });
 </script>
-<br>
-<br>
-    Select scope <select id="max">
-      <option value="4">4</option><option value="5">5</option><option value="6">6</option>
-      <option value="7">7</option><option value="8">8</option><option value="9">9</option>
-      <option value="10">10</option><option value="11">11</option><option value="12">12</option>
-      <option value="13">13</option><option value="14">14</option><option value="15">15</option>
-      <option value="16">16</option><option value="17">17</option><option value="18">18</option>
-      <option value="19">19</option><option value="20">20</option><option value="21">21</option>
-      <option value="22">22</option><option value="23">23</option><option value="24">24</option>
-      <option value="25">25</option><option value="26">26</option><option value="27">27</option>
-      <option value="28">28</option><option value="29">29</option><option value="30">30</option>
-      <option value="31">31</option>
-      <option value="32">32</option><option value="33">33</option><option value="34">34</option>
-      <option value="35">35</option><option value="36">36</option><option value="37">37</option>
-      <option value="38">38</option><option value="39">39</option><option value="40">40</option>
-      <option value="?" selected>MAX</option>
-    </select> days.
-    <button id="loaddata" class="button" name="loaddata" onClick="loadFile();">Load data</button><br>
-  </div>
-<div id="curve_chart" style="width:90%; height: 360px"></div>
+  <button id="loaddata" class="button" name="loaddata" onClick="loadFile();">Load data</button><br>
+</div><br>
+<div id="curve_chart" style="width: 1000px; height: 400px"></div>
 
 <script>
 //   let wanted = ["Netherlands", "Singapore", "Germany", "Italy", "Malaysia", "Switzerland", "Norway", "Iceland"
 // ,"Finland","India","Sweden","Spain","Iraq","Indonesia", "Thailand"];
-let wanted = ["Italy", "Singapore", "Germany", "Netherlands","Spain","Sweden", "Malaysia", "Norway", "Switzerland", "Thailand"];
+// let wanted = ["Philippines", "Italy", "Singapore", "Germany", "Netherlands","Spain","Sweden", "Malaysia", "Norway", "Switzerland", "Thailand"];
+let wanted = ["Vietnam", "Germany", "Italy", "France", "Japan", "South Korea", "Philippines", "United Kingdom", "Singapore", "Netherlands","Sweden", "Malaysia", "Norway", "Switzerland", "Thailand"];
 
 function userSelectCountry() {
   let list = [];
@@ -213,7 +231,7 @@ function checking(element, index, stats) {
 function prepareData(stats) {
   // console.log(stats);
   let max = 0;
-  var headerArray = ['Day'];
+  var headerArray = ['Day after first 30,000 infected'];
   for(let country in wanted) {
     size = 0;
     if (stats[wanted[country]] !== undefined) {
@@ -226,6 +244,7 @@ function prepareData(stats) {
   let usermax = parseInt($('#max').val());
   if (usermax != undefined) {
     if (usermax < max) { max = usermax; }
+    // console.log("max = "+max);
   }
 
   var dataArray = [headerArray];
@@ -245,34 +264,35 @@ function prepareData(stats) {
 }
 
 function toTable(stats) {
-  let table = "<table border='0' cellpadding='1' cellmargin='1' width='90%'>";
+  let table = "<table border='0' cellpadding='1' cellmargin='1' width='400'>";
   if (stats["Thailand"]!= null) {
-    let header = "<tr><td>Day (from First 100)</td>";
-    let data   = "<tr><td>Thailand (Infected)</td>";
-    let dif    = "<tr><td> + </td>";
+    let header = "<tr><th>Day (from First 100)</th><th>Thailand (Infected)</th><th> + </th></tr>\n";
+    let data   = "";
+    // let dif    = "<tr>";
     let last = 0;
     stats["Thailand"].forEach(
       (element, index) => {
         // console.log(index+" : "+ element);
-        header += "<td>"+(1+index)+"</td>";
+        data   += "<tr align='center'><td>"+(1+index)+"</td>";
         data   += "<td>"+element+"</td>";
         let diff = "-";
         if (index > 0) { diff = element - last; }
-        dif    += "<td>"+diff+"</td>";
+        data    += "<td>"+diff+"</td></tr>\n";
         last = element;
       }
       //checking(element, index, stats)
     )
-    header += "</tr>";
-    dif    += "</tr>";
-    table += header+"</tr>\n"+data+"\n"+dif+"</tr>\n";
+    // header += "</tr>";
+    // dif    += "</tr>";
+    table += header+data;
   }
   table += "</table>";
   return table;
 }
 
 function trimValue(element, newArr) {
-  if (element>=100) { newArr.push(element); }
+  if (element>=30000) { newArr.push(element); }
+  // if (element>=100) { newArr.push(element); }
   return newArr;
 }
 
@@ -303,8 +323,8 @@ function process(data) {
   // console.log(stats);
   let dataarr = prepareData(stats);
   drawChart(dataarr);
-  $('#result').empty();
-  $('#result').html("<h1>"+toTable(stats)+"</h1>");
+  // $('#result').empty();
+  // $('#result').html("<h1>"+toTable(stats)+"</h1>");
 }
 
 $('#load-file').bind('click', function () {
@@ -341,13 +361,6 @@ function loadFile() {
 google.charts.setOnLoadCallback(loadFile);
 </script>
   <div id="result"></div>
-  Source data: <a href="https://github.com/CSSEGISandData/COVID-19">Coronavirus COVID-19 Data Repository by Johns Hopkins CSSE</a> |
-  <a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv" target="_blank">(Raw data)</a>
-  <br><br>
-<style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.2.3.0 by
-<a href="https://github.com/windyberry/covid19">@windygallery</a> 2020</style>
-<br><br>
-  </center>
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js"></script>
@@ -372,5 +385,12 @@ google.charts.setOnLoadCallback(loadFile);
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
   </script>
+<br>
+Source data: <a href="https://github.com/CSSEGISandData/COVID-19">COVID-19 Data by Johns Hopkins CSSE</a> |
+<a href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv" target="_blank">(Raw data)</a>
+  <style="color:#CCCCCC; font-family: monospace,monospace; font-size: 1em; ">Coding v.2.9.0 by
+  <a href="https://github.com/windyberry/covid19">@windygallery</a> 2021</style>
+  <br><br>
+  </center>
 </body>
 </html>
